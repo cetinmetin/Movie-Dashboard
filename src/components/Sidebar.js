@@ -15,7 +15,7 @@ import { cilCircle } from '@coreui/icons'
 import sidebarMenuBrand from '../assets/images/SidebarIcons/1.png'
 const Sidebar = () => {
     return (
-        <CSidebar style={{ backgroundColor: "#4C8DEB" }}
+        <CSidebar style={{ backgroundColor: "#4C8DEB",height:"809px",width:"60px" }}
             position="fixed"
             unfoldable={true}
             popperArrow={false}
