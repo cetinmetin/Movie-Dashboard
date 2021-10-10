@@ -1,0 +1,56 @@
+{
+    "This Year": [
+        {
+            "name": "Action",
+            "data": "30"
+        },
+        {
+            "name": "Comedy",
+            "data": "50"
+        },
+        {
+            "name": "Romantic",
+            "data": "10"
+        },
+        {
+            "name": "Drama",
+            "data": "60"
+        }
+    ],
+    "This Month": [
+        {
+            "name": "Action",
+            "data": "80"
+        },
+        {
+            "name": "Comedy",
+            "data": "12"
+        },
+        {
+            "name": "Romantic",
+            "data": "28"
+        },
+        {
+            "name": "Drama",
+            "data": "30"
+        }
+    ],
+    "This Week": [
+        {
+            "name": "Action",
+            "data": "13"
+        },
+        {
+            "name": "Comedy",
+            "data": "37"
+        },
+        {
+            "name": "Romantic",
+            "data": "28"
+        },
+        {
+            "name": "Drama",
+            "data": "72"
+        }
+    ]
+}

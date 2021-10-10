@@ -1,0 +1,54 @@
+{
+    "Last 6 Months": [
+        {
+            "name": "Oct",
+            "data": "220000"
+        },
+        {
+            "name": "Nov",
+            "data": "125000"
+        },
+        {
+            "name": "Dec",
+            "data": "225000"
+        },
+        {
+            "name": "Jan",
+            "data": "240000"
+        },
+        {
+            "name": "Feb",
+            "data": "150000"
+        },
+        {
+            "name": "Mar",
+            "data": "120000"
+        }
+    ],
+    "Last Week": [
+        {
+            "name": "Oct",
+            "data": "5000"
+        },
+        {
+            "name": "Nov",
+            "data": "8000"
+        },
+        {
+            "name": "Dec",
+            "data": "7000"
+        },
+        {
+            "name": "Jan",
+            "data": "2500"
+        },
+        {
+            "name": "Feb",
+            "data": "1400"
+        },
+        {
+            "name": "Mar",
+            "data": "9850"
+        }
+    ]
+}
