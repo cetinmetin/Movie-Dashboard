@@ -16,5 +16,11 @@ $enable-rtl: true;
 // If you want to add custom CSS you can put it here.
 @import "custom";
 
-@import '~react-pro-sidebar/dist/scss/styles.scss';
+@import "~react-pro-sidebar/dist/scss/styles.scss";
 
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+@import "bootstrap-css-only/css/bootstrap.min.css";
+@import "mdbreact/dist/css/mdb.css";
+@import '~mdb-ui-kit/css/mdb.min.css';
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'react-dropdown/style.css';

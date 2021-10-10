@@ -94,7 +94,49 @@
     background: #ffffff;
     box-shadow: 0px 2px 10px rgba(76, 141, 235, 0.10077);
 }
-.responsive{
+.responsive {
     max-width: 100%;
     height: auto;
-  }
+}
+.topMoviesListRankIcon {
+    width: 13px;
+    height: 12px;
+    position: absolute;
+    left: 88.96%;
+    right: 6.94%;
+    margin-top: 1.4%;
+}
+.topMoviesListRank {
+    position: absolute;
+    height: 15px;
+    left: 93%;
+    right: 0%;
+    margin-top: 1%;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    /* identical to box height */
+
+    color: #405169;
+}
+.cardHeader {
+    border: 0px;
+    background-color: white;
+}
+//override
+.dataTable{
+margin-bottom: 0px;
+}
+.firstSearch{
+
+border: 1px solid rgba(76, 141, 235, 0.186481);
+box-sizing: border-box;
+border-radius: 5px;
+}
+.secondSearch{
+margin-left: 1%;
+border: 1px solid rgba(76, 141, 235, 0.186481);
+box-sizing: border-box;
+border-radius: 5px;
+}
