@@ -56,6 +56,7 @@ import ReactSearchBox from 'react-search-box'
 import topMovies from "../../data/jsonFiles/topMovies.json";
 import doughnutChartData from "../../data/jsonFiles/doughnutChartData.json"
 import barChartData from "../../data/jsonFiles/barChartData.json"
+import activityFeed from "../../data/jsonFiles/activityFeed.json"
 import Dropdown from 'react-dropdown';
 import Modal from '../modal/Modal'
 
@@ -347,19 +348,18 @@ const Dashboard = () => {
                         Activity
                     </div>
                     <div className="card-body">
-                        <CChartBar
-                            data={{
-                                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                                datasets: [
-                                    {
-                                        label: 'Hour',
-                                        backgroundColor: '#5AD6B0',
-                                        data: [40, 20, 12, 39, 10, 40, 39, 80, 40],
-                                    },
-                                ],
-                            }}
-                            labels="months"
-                        />
+                        <div class="activity-feed">
+                            {activityFeed.map((item) =>
+                                <div class="feed-item">
+                                    <div class="date">{item.date}</div>
+                                    <div class="feed-text">
+                                        <b>{item.header}</b>
+                                        {console.log(item.text)}
+                                        <div class="text">{item.text}</div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
