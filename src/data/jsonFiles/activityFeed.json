@@ -1,0 +1,22 @@
+[
+    {
+        "date": "11-02-2018",
+        "header": "Invoice Sent",
+        "text":"Invoice #0076 of amount $1300 has been emailed to email@address.com, email2@address.com"
+    },
+    {
+        "date": "08-02-2018",
+        "header": "Invoice Sent",
+        "text":"Invoice #0075 of amount $2000 has been emailed to email@address.com"
+    },
+    {
+        "date": "11-01-2018",
+        "header": "Payment Received",
+        "text":"Invoice #0072 of amount $1300 has been paid and added to your account."
+    },
+    {
+        "date": "04-01-2018",
+        "header": "Invoice Generated",
+        "text":"Invoice #0076 of amount $1300 has been generated and is ready to be sent. Send now"
+    }
+]
