@@ -16,28 +16,28 @@ const MyVerticallyCenteredModal = (props) => {
             </Modal.Header>
             <Modal.Body>
                 <p>
-                    <b>Actors:</b> {props.Actors}
+                    <b>Actors:</b> {props.actors}
                 </p>
                 <p>
-                    <b>Directors:</b> {props.Directors}
+                    <b>Directors:</b> {props.director}
                 </p>
                 <p>
-                    <b>Duration:</b> {props.Duration}
+                    <b>Duration:</b> {props.duration}
                 </p>
                 <p>
-                    <b>Genre:</b> {props.Genre}
+                    <b>Genre:</b> {props.genre}
                 </p>
                 <p>
-                    <b>Awards:</b> {props.Awards}
+                    <b>Awards:</b> {props.awards}
                 </p>
                 <p>
-                    <b>Production:</b> {props.Production}
+                    <b>Production:</b> {props.production}
                 </p>
                 <p>
-                    <b>Released:</b> {props.Released}
+                    <b>Released:</b> {props.released}
                 </p>
                 <p>
-                    <b>Imdb:</b> {props.imdbRating}
+                    <b>Imdb:</b> {props.imdb}
                 </p>
             </Modal.Body>
             <Modal.Footer>
