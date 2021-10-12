@@ -25,11 +25,8 @@ const headerStyle = {
     right: "0%",
     top: "0%",
     bottom: "0%",
-    marginBottom: "43px",
     height: "70px",
-}
-const searchboxStyle = {
-    border: "1px",
+    boxShadow: "0px 2px 10px rgba(76, 141, 235, 0.10077)"
 }
 const headerInformTexts = {
     fontStyle: "normal",
@@ -38,22 +35,19 @@ const headerInformTexts = {
     lineHeight: "18px",
     color: "#D8D8D8"
 }
-const headerInformTexts1 = {
+const reviewedMoviesCount = {
     position: "absolute",
-    height: "50px",
+    height: "18px",
     left: "73.09%",
     right: "15.39%",
     top: "calc(50% - 18px/2 - 10px)"
 }
-const headerInformTexts2 = {
+const lastReviewedMovieName = {
     position: "absolute",
     height: "18px",
     left: "73.09%",
     right: "16.63%",
     top: "calc(50% - 18px/2 - 9px)"
-}
-const iconStyles = {
-    left: "50%", top: "50%", marginTop: "35%",
 }
 const avatarParentStyle = {
     position: "absolute",
@@ -79,13 +73,21 @@ const notificationStyle = {
     height: "22px",
     right: "80px"
 }
+const searchBoxStyle = {
+    borderRadius: "5px",
+    justifySelf: "center",
+    border: "1px solid rgba(76, 141, 235, 0.186481)"
+}
+
 const Header = () => {
+
     const [movieCounter, setMovieCounter] = useState()
     const [lastViewedMovie, setLastViewedMovie] = useState()
     store.subscribe(() => {
         setMovieCounter(store.getState().userReducer.reviewedMovieCounter);
         setLastViewedMovie(store.getState().userReducer.movieInformations[0])
     })
+
     return (
         <CHeader position="sticky" style={headerStyle}>
             <CContainer fluid>
@@ -95,7 +97,7 @@ const Header = () => {
                             placeholder="Search"
                             value=""
                             callback={record => console.log(record)}
-                            style={{ borderRadius: "5px", justifySelf: "center" }}
+                            style={searchBoxStyle}
                             inputBoxBorderColor="rgba(76,141,235,0.186481)"
                             inputBoxFontColor="#A0BCE4"
                         />
@@ -103,10 +105,10 @@ const Header = () => {
                 </CHeaderNav>
                 <CHeaderNav>
                     <CNavItem className="row">
-                        <CNavItem style={headerInformTexts1}>
+                        <CNavItem style={reviewedMoviesCount}>
                             <p style={headerInformTexts}>Reviewed Movies Count: {movieCounter}</p>
                         </CNavItem>
-                        <CNavItem style={headerInformTexts2}>
+                        <CNavItem style={lastReviewedMovieName}>
                             <p style={headerInformTexts}>Last Reviewed Movie: {lastViewedMovie}</p>
                         </CNavItem>
                     </CNavItem>

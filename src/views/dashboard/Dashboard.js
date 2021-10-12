@@ -61,7 +61,7 @@ const Dashboard = () => {
     const barChartOptions = ['Last 6 Months', 'Last Week']
     return (
         <div className="row">
-            <h1>Dashboard</h1>
+            <h1 className="componentTitle">Dashboard</h1>
             <div className="col-fluid leftColumnContent responsive">
                 {/* Content of the left column. */}
                 {<Modal
@@ -115,7 +115,9 @@ const Dashboard = () => {
                                 {topMovies.map((item, index) =>
                                     <tr>
                                         <td>{index + 1}</td>
-                                        <td style={{ color: "#4C8DEB" }}>{item.name}</td>
+                                        <td style={{ color: "#4C8DEB", fontSize: "12px", fontWeight: "bold" }}>
+                                            {item.name}
+                                        </td>
                                         <td>{<img className="topMoviesListRankIcon" src={rank} />}</td>
                                         <td><i className="topMoviesListRank">{item.rank}</i></td>
                                     </tr>
@@ -202,8 +204,10 @@ const Dashboard = () => {
                                 <div class="feed-item">
                                     <div class="date">{item.date}</div>
                                     <div class="feed-text">
-                                        <b>{item.header}</b>
-                                        <div class="text">{item.text}</div>
+                                        <p style={{ fontWeight: "bold", fontSize: "12px", color: "#405169", marginBottom: "6px", lineHeight: "15px" }}>
+                                            {item.header}
+                                        </p>
+                                        <div className="text" style={{ fontWeight: "normal", fontSize: "10px", lineHeight: "13px", color: "#405169" }}>{item.text}</div>
                                     </div>
                                 </div>
                             )}

@@ -26,7 +26,7 @@ export async function CallGetMoviesFromApi(movieName, year) {
                 response.Search.map((item, index) => {
                     rows[index] = ({
                         index: index + 1,
-                        name: <a type="button" style={{ color: "#4C8DEB" }}
+                        name: <a type="button" style={{ color: "#4C8DEB", fontWeight: "bold", fontSize: "12px", lineHeight: "15px" }}
                             onClick={() => {
                                 getSearchedMovieDetailsFromApi(index)
                             }}
