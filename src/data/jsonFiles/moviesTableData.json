@@ -1,0 +1,25 @@
+{
+    "columns": [
+        {
+            "field": "index",
+            "sort": "asc",
+            "width": 30
+        },
+        {
+            "field": "name",
+            "sort": "asc",
+            "width": 50
+        },
+        {
+            "field": "year",
+            "sort": "asc",
+            "width": 50
+        },
+        {
+            "field": "imdbID",
+            "sort": "asc",
+            "width": 50
+        }
+    ],
+    "rows": []
+}
