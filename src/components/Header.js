@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import {
     CContainer,
@@ -16,6 +16,8 @@ import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from '@coreui/icons'
 import ReactSearchBox from 'react-search-box'
 import notifications from '../assets/images/HeaderIcons/notifications.png'
 import avatar from '../assets/images/HeaderIcons/avatar.png'
+import store from '../redux/store/index'
+
 const headerStyle = {
     backgroundColor: "#FFFFFF",
     borderColor: "white",
@@ -23,7 +25,7 @@ const headerStyle = {
     right: "0%",
     top: "0%",
     bottom: "0%",
-    marginBottom: "86px",
+    marginBottom: "43px",
     height: "70px",
 }
 const searchboxStyle = {
@@ -75,9 +77,15 @@ const notificationStyle = {
     top: "23px",
     width: "29px",
     height: "22px",
-    right:"80px"
+    right: "80px"
 }
 const Header = () => {
+    const [movieCounter, setMovieCounter] = useState()
+    const [lastViewedMovie, setLastViewedMovie] = useState()
+    store.subscribe(() => {
+        setMovieCounter(store.getState().userReducer.reviewedMovieCounter);
+        setLastViewedMovie(store.getState().userReducer.movieInformations[0])
+    })
     return (
         <CHeader position="sticky" style={headerStyle}>
             <CContainer fluid>
@@ -96,10 +104,10 @@ const Header = () => {
                 <CHeaderNav>
                     <CNavItem className="row">
                         <CNavItem style={headerInformTexts1}>
-                            <p style={headerInformTexts}>Reviewed Movies Count: </p>
+                            <p style={headerInformTexts}>Reviewed Movies Count: {movieCounter}</p>
                         </CNavItem>
                         <CNavItem style={headerInformTexts2}>
-                            <p style={headerInformTexts}>Last Reviewed Movie: </p>
+                            <p style={headerInformTexts}>Last Reviewed Movie: {lastViewedMovie}</p>
                         </CNavItem>
                     </CNavItem>
                     <CNavItem style={notificationParentStyle}>
