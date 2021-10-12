@@ -1,113 +1,41 @@
-import React, { lazy, useEffect, useState } from 'react'
-
-import {
-    CAvatar,
-    CButton,
-    CButtonGroup,
-    CCard,
-    CCardBody,
-    CCardFooter,
-    CCardHeader,
-    CCol,
-    CProgress,
-    CRow,
-    CTable,
-    CTableBody,
-    CTableDataCell,
-    CTableHead,
-    CTableHeaderCell,
-    CTableRow,
-} from '@coreui/react'
-import { getStyle, hexToRgba } from '@coreui/utils'
-import CIcon from '@coreui/icons-react'
-import {
-    cibCcAmex,
-    cibCcApplePay,
-    cibCcMastercard,
-    cibCcPaypal,
-    cibCcStripe,
-    cibCcVisa,
-    cibGoogle,
-    cibFacebook,
-    cibLinkedin,
-    cifBr,
-    cifEs,
-    cifFr,
-    cifIn,
-    cifPl,
-    cifUs,
-    cibTwitter,
-    cilCloudDownload,
-    cilPeople,
-    cilUser,
-    cilUserFemale,
-} from '@coreui/icons'
-import {
-    CChartBar,
-    CChartDoughnut,
-    CChartLine,
-    CChartPie,
-    CChartPolarArea,
-    CChartRadar,
-} from '@coreui/react-chartjs'
+import React, { useEffect, useState } from 'react'
+import { CChartBar, CChartDoughnut } from '@coreui/react-chartjs'
 import rank from '../../assets/images/TopListIcons/rank.png'
-import { MDBTable, MDBTableBody, MDBTableHead, MDBDataTable, MDBDataTableV5 } from 'mdbreact';
-import ReactSearchBox from 'react-search-box'
+import { MDBTable, MDBTableBody, MDBDataTable } from 'mdbreact';
 import topMovies from "../../data/jsonFiles/topMovies.json";
 import doughnutChartData from "../../data/jsonFiles/doughnutChartData.json"
 import barChartData from "../../data/jsonFiles/barChartData.json"
 import activityFeed from "../../data/jsonFiles/activityFeed.json"
 import Dropdown from 'react-dropdown';
 import Modal from '../modal/Modal'
+import moviesTableData from '../../data/jsonFiles/moviesTableData.json'
+import { useDispatch } from "react-redux";
+import { setSearchTitle, setSearchYear, setModalShow } from '../../redux/actions/userActions'
+import store from '../../redux/store/index'
 
-const WidgetsBrand = lazy(() => import('../../widgets/WidgetsBrand'))
+import { CallGetMoviesFromApi } from '../../APIHelper/apiHelpers';
 
 const Dashboard = () => {
-    const [searchTitle, setSearchTitle] = useState()
-    const [searchYear, setSearchYear] = useState()
+    const dispatch = useDispatch()
+    let searchTitle, searchYear, moviesTableDataRows;
+    store.subscribe(() => {
+        searchTitle = store.getState().userReducer.searchTitle;
+        searchYear = store.getState().userReducer.searchYear;
+        moviesTableDataRows = store.getState().userReducer.moviesTableDataRows;
+        setMovieInformations(store.getState().userReducer.movieInformations);
+        setModalShowLocal(store.getState().userReducer.modalShow);
+    })
     const [doughnutChartDropdown, setDoughnutChartDropdown] = useState('This Year')
     const [barChartDropdown, setBarChartDropdown] = useState('Last 6 Months')
-    const [imdbIDList, setImdbIDList] = useState([])
-    const [modalShow, setModalShow] = useState(false)
-    const [modalTitle, setModalTitle] = useState()
-    const [modalActors, setModalActors] = useState()
-    const [modalDirectors, setModalDirectors] = useState()
-    const [modalDuration, setModalDuration] = useState()
-    const [modalGenre, setModalGenre] = useState()
-    const [modalAwards, setModalAwards] = useState()
-    const [modalProduction, setModalProduction] = useState()
-    const [modalReleased, setModalReleased] = useState()
-    const [modalImdbRating, setModalImdbRating] = useState()
-    const [data, setData] = useState({
-        columns: [
-            {
-                field: 'index',
-                sort: 'asc',
-                width: 30
-            },
-            {
-                field: 'name',
-                sort: 'asc',
-                width: 50
-            },
-            {
-                field: 'year',
-                sort: 'asc',
-                width: 50
-            },
-            {
-                field: 'imdbID',
-                sort: 'asc',
-                width: 50
-            }
-        ],
-        rows: []
-    })
+    const [moviesTableDataLocal, setMoviesTableDataLocal] = useState(moviesTableData)
+    const [modalShowLocal, setModalShowLocal] = useState()
+    const [movieInformations, setMovieInformations] = useState([])
+
     function handleSearch(value) {
-        setSearchTitle(value)
+        dispatch(setSearchTitle(value))
     }
     function handleYear(value) {
-        setSearchYear(value)
+        dispatch(setSearchYear(value))
     }
     function changeDoughnutDropdown(value) {
         setDoughnutChartDropdown(value)
@@ -115,123 +43,44 @@ const Dashboard = () => {
     function changeBarChart(value) {
         setBarChartDropdown(value)
     }
-    async function CallGetMoviesFromApi(movieName, year) {
-        reset()
-        getImdbID(searchTitle)
-        const rows = JSON.parse(JSON.stringify(data.rows));
-        await getMoviesFromApi(movieName, year).then(response => {
-            if (response.Response !== 'False')
-                response.Search.map((item, index) => {
-                    rows.push({
-                        index: index + 1,
-                        name: <a type="button" style={{ color: "#4C8DEB" }}
-                            onClick={() => getSearchedMovieDetailsFromApi(index)}
-                        >
-                            {item.Title}
-                        </a>, year: item.Year,
-                        imdbID: item.imdbID
-                    })
-                })
-            else
-                console.log('Movie Not Found')
+    function searchMovie(movieName, movieYear) {
+        CallGetMoviesFromApi(movieName, movieYear).then(() => {
+            const rows = moviesTableDataRows
+            setMoviesTableDataLocal({ ...moviesTableDataLocal, rows })
         })
-        setData({ ...data, rows });
     }
-    function reset() {
-        data.rows = []
-        setData({ ...data, data })
-        setSearchYear('')
-        setSearchTitle('')
-        setImdbIDList([])
+    function assign() {
+        const rows = moviesTableDataRows
+        setMoviesTableDataLocal({ ...moviesTableDataLocal, rows })
     }
     useEffect(() => {
-        reset()
-        CallGetMoviesFromApi()
+        CallGetMoviesFromApi("Batman").then(() => assign())
     }, [])
-    async function getImdbID(movieName) {
-        try {
-            await getMoviesFromApi(movieName).then(response => {
-                if (response.Response !== 'False') {
-                    response.Search.map((item, index) => { imdbIDList[index] = item.imdbID })
-                }
-            })
-            setImdbIDList(imdbIDList)
-        } catch (e) {
-            console.log("Error when getimdbid" + e)
-        }
-    }
-    function openModal(modalTitle, modalActors, modalDirectors, modalDuration, modalGenre, modalAwards, modalProduction,
-        modalReleased, modalImdbRating) {
-        setModalShow(!modalShow)
-        setModalTitle(modalTitle)
-        setModalActors(modalActors)
-        setModalDirectors(modalDirectors)
-        setModalDuration(modalDuration)
-        setModalGenre(modalGenre)
-        setModalAwards(modalAwards)
-        setModalProduction(modalProduction)
-        setModalReleased(modalReleased)
-        setModalImdbRating(modalImdbRating)
-    }
-    async function getSearchedMovieDetailsFromApi(responseIndex) {
-        try {
-            let url = `http://www.omdbapi.com/?i=${imdbIDList[responseIndex]}&apikey=f4fdd752`
-            let response = await fetch(url);
-            let responseApi = await response.json();
-            console.log(responseApi)
-            openModal(responseApi.Title, responseApi.Actors, responseApi.Director, responseApi.Runtime,
-                responseApi.Genre, responseApi.Awards, responseApi.Production, responseApi.Released, responseApi.imdbRating)
-        } catch (e) {
-            console.log("Error when getSearchedMovieDetailsFromApi" + e)
-        }
-    }
-    async function getMoviesFromApi(movieName, year) {
-        try {
-            let url = ""
-            let urlForDetails = ""
-            if (movieName === undefined || movieName === '') {
-                if (year === undefined || year === '')
-                    url = "http://www.omdbapi.com/?s=batman&apikey=f4fdd752"
-                else
-                    url = `http://www.omdbapi.com/?s=batman&y=${year}&apikey=f4fdd752`
-            }
-            else {
-                if (year === undefined || year === '')
-                    url = `http://www.omdbapi.com/?s=${movieName}&apikey=f4fdd752`
-                else
-                    url = `http://www.omdbapi.com/?s=${movieName}&y=${year}&apikey=f4fdd752`
 
-            }
-            let response = await fetch(url);
-            let responseApi = await response.json();
-            return responseApi;
-        } catch (error) {
-            console.error(error);
-        }
-    }
-    const options = ['This Year', 'This Month', 'This Week']
-    const options2 = ['Last 6 Months', 'Last Week']
+    const doughnutChartOptions = ['This Year', 'This Month', 'This Week']
+    const barChartOptions = ['Last 6 Months', 'Last Week']
     return (
         <div className="row">
-            <div className="col-fluid ilkDivDeneme responsive">
-                <Modal
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
-                    title={modalTitle}
-                    Actors={modalActors}
-                    Directors={modalDirectors}
-                    Duration={modalDuration}
-                    Genre={modalGenre}
-                    Awards={modalAwards}
-                    Production={modalProduction}
-                    Released={modalReleased}
-                    imdbRating={modalImdbRating}
-                />
+            <h1>Dashboard</h1>
+            <div className="col-fluid leftColumnContent responsive">
                 {/* Content of the left column. */}
-                <div className="card chartDoughnutCardBody">
+                {<Modal
+                    show={modalShowLocal}
+                    onHide={() => dispatch(setModalShow())}
+                    title={movieInformations[0]}
+                    actors={movieInformations[1]}
+                    director={movieInformations[2]}
+                    duration={movieInformations[3]}
+                    genre={movieInformations[4]}
+                    awards={movieInformations[5]}
+                    production={movieInformations[6]}
+                    released={movieInformations[7]}
+                    imdb={movieInformations[8]}
+                />}
+                <div className="card doughnutChartCard">
                     <div className="d-flex justify-content-between">
                         <div className="card-header cardHeader" > Categories </div>
-                        <Dropdown options={options} onChange={(e) => { changeDoughnutDropdown(e.value) }} value={options[0]} />
+                        <Dropdown options={doughnutChartOptions} onChange={(e) => { changeDoughnutDropdown(e.value) }} value={doughnutChartOptions[0]} />
                     </div>
                     <div className="card-body">
                         <CChartDoughnut
@@ -250,7 +99,7 @@ const Dashboard = () => {
                         {/* </div> */}
                     </div>
                 </div>
-                <div className="card denemeBirinciAlt">
+                <div className="card topMoviesCard">
                     <div className="card-header cardHeader">
                         Top Movies
                     </div>
@@ -276,12 +125,12 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
-            <div className="col-fluid ikinciDivDeneme responsive">
+            <div className="col-fluid middleColumnContent responsive">
                 {/* Content of the middle column. */}
-                <div className="card ikinciSutunBirinciSatır">
+                <div className="card watchTimeCard">
                     <div className="d-flex justify-content-between">
-                        <div className="card-header cardHeader">Watch Time </div>
-                        <Dropdown options={options2} onChange={(e) => { changeBarChart(e.value) }} value={options2[0]} />
+                        <div className="card-header cardHeader">Watch Time</div>
+                        <Dropdown options={barChartOptions} onChange={(e) => { changeBarChart(e.value) }} value={barChartOptions[0]} />
                     </div>
                     <div className="card-body">
                         <CChartBar
@@ -301,31 +150,32 @@ const Dashboard = () => {
                         />
                     </div>
                 </div>
-                <div className="card birinciSatirIkinciSutun" >
+                <div className="card movieListCard" >
                     <div className="card-body">
                         <div className="d-flex justify-content-center">
                             <div className="card-header cardHeader">
                                 Movies
                             </div>
-                            <div id="navbar-search-autocomplete" class="form-outline firstSearch">
+                            <div id="navbar-search-autocomplete" class="form-outline searchboxMovie">
                                 <input type="search" onChange={(e) => { handleSearch(e.target.value) }} id="form1"
                                     class="form-control" />
                                 <label class="form-label" for="form1">Movie</label>
                             </div>
-                            <div id="navbar-search-autocomplete" class="form-outline secondSearch">
+                            <div id="navbar-search-autocomplete" class="form-outline searchboxYear">
                                 <input type="search" id="form2" onChange={(e) => { handleYear(e.target.value) }}
                                     class="form-control" />
                                 <label class="form-label" for="form1">Year</label>
                             </div>
-                            <button type="button" onClick={() => CallGetMoviesFromApi(searchTitle, searchYear)}
+                            <button type="button" onClick={() => { searchMovie(searchTitle, searchYear); }
+                            }
                                 class="btn btn-primary" >
                                 Search
                             </button>
                         </div>
                         <MDBDataTable
                             scrollY
-                            data={data}
-                            entries={10}
+                            data={moviesTableDataLocal}
+                            entries={20}
                             responsive
                             small
                             searching={false}
@@ -333,17 +183,16 @@ const Dashboard = () => {
                             displayEntries={false}
                             borderless
                             info={false}
-                            maxHeight="200px"
-                            maxWidth="540px"
+                            maxheight="200px"
+                            maxwidth="540px"
+                            onClick={() => dispatch(setModalShow())}
                         />
-                        {console.log(data.rows)}
-
                     </div>
                 </div>
             </div >
-            <div className="col-fluid ucuncuDivDeneme responsive">
+            <div className="col-fluid rightColumnContent responsive">
                 {/* Content of the right column. */}
-                <div className="card ucuncuSutunBirinciSatir" >
+                <div className="card activityCard" >
                     <div className="card-header cardHeader">
                         Activity
                     </div>
@@ -354,7 +203,6 @@ const Dashboard = () => {
                                     <div class="date">{item.date}</div>
                                     <div class="feed-text">
                                         <b>{item.header}</b>
-                                        {console.log(item.text)}
                                         <div class="text">{item.text}</div>
                                     </div>
                                 </div>
